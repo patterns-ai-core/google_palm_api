@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "cohere"
-
 RSpec.describe GooglePalmApi::Client do
   subject { described_class.new(api_key: "123") }
 
