@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "cohere"
-
 RSpec.describe GooglePalmApi::Client do
   subject { described_class.new(api_key: "123") }
 
@@ -71,8 +69,8 @@ RSpec.describe GooglePalmApi::Client do
 
     before do
       allow_any_instance_of(Faraday::Connection).to receive(:post)
-      .with("/v1beta2/models/text-bison-001:generateText")
-      .and_return(response)
+        .with("/v1beta2/models/text-bison-001:generateText")
+        .and_return(response)
     end
 
     it "returns the generated text" do
@@ -84,15 +82,14 @@ RSpec.describe GooglePalmApi::Client do
     let(:fixture) { JSON.parse(File.read("spec/fixtures/generate_chat_message.json")) }
     let(:response) { OpenStruct.new(body: fixture) }
 
-
     before do
       allow_any_instance_of(Faraday::Connection).to receive(:post)
-      .with("/v1beta2/models/chat-bison-001:generateMessage")
-      .and_return(response)
+        .with("/v1beta2/models/chat-bison-001:generateMessage")
+        .and_return(response)
     end
 
     it "returns the generated text" do
       expect(subject.generate_chat_message(prompt: "Hello!")).to eq(fixture)
-    end    
+    end
   end
 end
