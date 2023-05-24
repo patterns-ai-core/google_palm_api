@@ -13,7 +13,7 @@ module GooglePalmApi
       temperature: 0.0,
       completion_model_name: "text-bison-001",
       chat_completion_model_name: "chat-bison-001",
-      embeddings_model_name: "embedding-gecko-001",
+      embeddings_model_name: "embedding-gecko-001"
     }
 
     def initialize(api_key:)
@@ -52,7 +52,7 @@ module GooglePalmApi
       response = connection.post("/v1beta2/models/#{DEFAULTS[:completion_model_name]}:generateText") do |req|
         req.params = {key: api_key}
 
-        req.body = {prompt: { text: prompt }}
+        req.body = {prompt: {text: prompt}}
         req.body[:temperature] = temperature || DEFAULTS[:temperature]
         req.body[:candidate_count] = candidate_count if candidate_count
         req.body[:max_output_tokens] = max_output_tokens if max_output_tokens
@@ -99,7 +99,7 @@ module GooglePalmApi
       response = connection.post("/v1beta2/models/#{DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
         req.params = {key: api_key}
 
-        req.body = {prompt: { messages: [{content: prompt}] }}
+        req.body = {prompt: {messages: [{content: prompt}]}}
         req.body[:context] = context if context
         req.body[:examples] = examples if examples
         req.body[:messages] = messages if messages
@@ -110,7 +110,7 @@ module GooglePalmApi
         req.body[:client] = client if client
       end
       response.body
-    end    
+    end
 
     #
     # The embedding service in the PaLM API generates state-of-the-art embeddings for words, phrases, and sentences.
@@ -141,11 +141,11 @@ module GooglePalmApi
 
     #
     # Lists models available through the API.
-    # 
+    #
     # @param [Integer] page_size
     # @param [String] page_token
     # @return [Hash]
-    # 
+    #
     def list_models(page_size: nil, page_token: nil)
       response = connection.get("/v1beta2/models") do |req|
         req.params = {key: api_key}
@@ -153,37 +153,37 @@ module GooglePalmApi
         req.params[:pageSize] = page_size if page_size
         req.params[:pageToken] = page_token if page_token
       end
-      response.body      
+      response.body
     end
 
-    # 
+    #
     # Runs a model's tokenizer on a string and returns the token count.
-    # 
+    #
     # @param [String] model
     # @param [String] prompt
     # @return [Hash]
-    # 
+    #
     def count_message_tokens(model:, prompt:)
       response = connection.post("/v1beta2/models/#{model}:countMessageTokens") do |req|
         req.params = {key: api_key}
 
-        req.body = {prompt: { messages: [{content: prompt}] }}
+        req.body = {prompt: {messages: [{content: prompt}]}}
       end
       response.body
     end
 
     #
     # Gets information about a specific Model.
-    # 
+    #
     # @param [String] name
     # @return [Hash]
-    # 
+    #
     def get_model(model:)
       response = connection.get("/v1beta2/models/#{model}") do |req|
         req.params = {key: api_key}
       end
       response.body
-    end 
+    end
 
     private
 
