@@ -40,7 +40,6 @@ module GooglePalmApi
     #
     def generate_text(
       prompt:,
-      model: nil,
       temperature: nil,
       candidate_count: nil,
       max_output_tokens: nil,
@@ -50,7 +49,7 @@ module GooglePalmApi
       stop_sequences: nil,
       client: nil
     )
-      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:completion_model_name]}:generateText") do |req|
+      response = connection.post("/v1beta2/models/#{DEFAULTS[:completion_model_name]}:generateText") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: { text: prompt }}
@@ -87,7 +86,6 @@ module GooglePalmApi
     #
     def generate_chat_message(
       prompt:,
-      model: nil,
       context: nil,
       examples: nil,
       messages: nil,
@@ -98,11 +96,10 @@ module GooglePalmApi
       client: nil
     )
       # Overwrite the default ENDPOINT_URL for this method.
-      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
+      response = connection.post("/v1beta2/models/#{DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: { messages: [{content: prompt}] }}
-        req.body[:model] = model if model
         req.body[:context] = context if context
         req.body[:examples] = examples if examples
         req.body[:messages] = messages if messages
