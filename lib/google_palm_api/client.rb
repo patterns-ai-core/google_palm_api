@@ -8,7 +8,6 @@ module GooglePalmApi
     attr_reader :api_key, :connection
 
     ENDPOINT_URL = "https://generativelanguage.googleapis.com/"
-    AUTOPUSH_ENDPOINT_URL = "https://autopush-generativelanguage.sandbox.googleapis.com/"
 
     DEFAULTS = {
       temperature: 0.0,
@@ -51,11 +50,11 @@ module GooglePalmApi
       stop_sequences: nil,
       client: nil
     )
-      response = connection(url: ENDPOINT_URL).post("/v1beta2/models/#{model || DEFAULTS[:completion_model_name]}:generateText") do |req|
+      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:completion_model_name]}:generateText") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: { text: prompt }}
-        req.body[:temperature] = temperature if temperature
+        req.body[:temperature] = temperature || DEFAULTS[:temperature]
         req.body[:candidate_count] = candidate_count if candidate_count
         req.body[:max_output_tokens] = max_output_tokens if max_output_tokens
         req.body[:top_p] = top_p if top_p
@@ -99,7 +98,7 @@ module GooglePalmApi
       client: nil
     )
       # Overwrite the default ENDPOINT_URL for this method.
-      response = connection(url: AUTOPUSH_ENDPOINT_URL).post("/v1beta2/models/#{model || DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
+      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: { messages: [{content: prompt}] }}
@@ -107,7 +106,7 @@ module GooglePalmApi
         req.body[:context] = context if context
         req.body[:examples] = examples if examples
         req.body[:messages] = messages if messages
-        req.body[:temperature] = temperature if temperature
+        req.body[:temperature] = temperature || DEFAULTS[:temperature]
         req.body[:candidate_count] = candidate_count if candidate_count
         req.body[:top_p] = top_p if top_p
         req.body[:top_k] = top_k if top_k
@@ -133,7 +132,7 @@ module GooglePalmApi
       model: nil,
       client: nil
     )
-      response = connection(url: ENDPOINT_URL).post("/v1beta2/models/#{model || DEFAULTS[:embeddings_model_name]}:embedText") do |req|
+      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:embeddings_model_name]}:embedText") do |req|
         req.params = {key: api_key}
 
         req.body = {text: text}
@@ -143,11 +142,57 @@ module GooglePalmApi
       response.body
     end
 
+    #
+    # Lists models available through the API.
+    # 
+    # @param [Integer] page_size
+    # @param [String] page_token
+    # @return [Hash]
+    # 
+    def list_models(page_size: nil, page_token: nil)
+      response = connection.get("/v1beta2/models") do |req|
+        req.params = {key: api_key}
+
+        req.params[:pageSize] = page_size if page_size
+        req.params[:pageToken] = page_token if page_token
+      end
+      response.body      
+    end
+
+    # 
+    # Runs a model's tokenizer on a string and returns the token count.
+    # 
+    # @param [String] model
+    # @param [String] prompt
+    # @return [Hash]
+    # 
+    def count_message_tokens(model:, prompt:)
+      response = connection.post("/v1beta2/models/#{model}:countMessageTokens") do |req|
+        req.params = {key: api_key}
+
+        req.body = {prompt: { messages: [{content: prompt}] }}
+      end
+      response.body
+    end
+
+    #
+    # Gets information about a specific Model.
+    # 
+    # @param [String] name
+    # @return [Hash]
+    # 
+    def get_model(model:)
+      response = connection.get("/v1beta2/models/#{model}") do |req|
+        req.params = {key: api_key}
+      end
+      response.body
+    end 
+
     private
 
     # standard:disable Lint/DuplicateMethods
-    def connection(url:)
-      Faraday.new(url: url) do |faraday|
+    def connection
+      Faraday.new(url: ENDPOINT_URL) do |faraday|
         faraday.request :json
         faraday.response :json, content_type: /\bjson$/
         faraday.adapter Faraday.default_adapter

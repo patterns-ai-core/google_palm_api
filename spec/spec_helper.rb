@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require "google_palm_api"
+require "faraday"
+require "faraday_middleware"
+require "ostruct"
+require "json"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
