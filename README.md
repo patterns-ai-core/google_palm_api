@@ -1,8 +1,9 @@
 # GooglePalmApi
 
-TODO: Delete this and the text below, and describe your gem
+Ruby API client for the Google PaLM APIs.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/google_palm_api`. To experiment with that code, run `bin/console` for an interactive prompt.
+![Tests status](https://github.com/andreibondarev/google_palm_api/actions/workflows/ci.yml/badge.svg) [![Gem Version](https://badge.fury.io/rb/google_palm_api.svg)](https://badge.fury.io/rb/google_palm_api)
+
 
 ## Installation
 
