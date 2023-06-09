@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+## [0.1.1] - 2023-06-09
+- Fix the `generate_chat_message()`
+
 ## [0.1.0] - 2023-05-23
 
 - Initial release
