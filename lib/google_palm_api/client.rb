@@ -85,10 +85,10 @@ module GooglePalmApi
     # @return [Hash]
     #
     def generate_chat_message(
-      prompt:,
+      messages:,
+      prompt: nil,
       context: nil,
       examples: nil,
-      messages: nil,
       temperature: nil,
       candidate_count: nil,
       top_p: nil,
@@ -99,10 +99,12 @@ module GooglePalmApi
       response = connection.post("/v1beta2/models/#{DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
         req.params = {key: api_key}
 
-        req.body = {prompt: {messages: [{content: prompt}]}}
-        req.body[:context] = context if context
-        req.body[:examples] = examples if examples
-        req.body[:messages] = messages if messages
+        req.body = {prompt: {}}
+
+        req.body[:prompt][:messages] = messages if messages
+        req.body[:prompt][:context] = context if context
+        req.body[:prompt][:examples] = examples if examples
+
         req.body[:temperature] = temperature || DEFAULTS[:temperature]
         req.body[:candidate_count] = candidate_count if candidate_count
         req.body[:top_p] = top_p if top_p

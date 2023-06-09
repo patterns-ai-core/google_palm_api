@@ -89,7 +89,7 @@ RSpec.describe GooglePalmApi::Client do
     end
 
     it "returns the generated text" do
-      expect(subject.generate_chat_message(prompt: "Hello!")).to eq(fixture)
+      expect(subject.generate_chat_message(messages: [{content: "Hello!"}])).to eq(fixture)
     end
   end
 end
