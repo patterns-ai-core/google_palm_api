@@ -47,9 +47,10 @@ module GooglePalmApi
       top_k: nil,
       safety_settings: nil,
       stop_sequences: nil,
-      client: nil
+      client: nil,
+      model: nil
     )
-      response = connection.post("/v1beta2/models/#{DEFAULTS[:completion_model_name]}:generateText") do |req|
+      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:completion_model_name]}:generateText") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: {text: prompt}}
@@ -93,10 +94,11 @@ module GooglePalmApi
       candidate_count: nil,
       top_p: nil,
       top_k: nil,
-      client: nil
+      client: nil,
+      model: nil
     )
       # Overwrite the default ENDPOINT_URL for this method.
-      response = connection.post("/v1beta2/models/#{DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
+      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:chat_completion_model_name]}:generateMessage") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: {}}
@@ -165,8 +167,8 @@ module GooglePalmApi
     # @param [String] prompt
     # @return [Hash]
     #
-    def count_message_tokens(model:, prompt:)
-      response = connection.post("/v1beta2/models/#{model}:countMessageTokens") do |req|
+    def count_message_tokens(prompt:, model: nil)
+      response = connection.post("/v1beta2/models/#{model || DEFAULTS[:chat_completion_model_name]}:countMessageTokens") do |req|
         req.params = {key: api_key}
 
         req.body = {prompt: {messages: [{content: prompt}]}}
