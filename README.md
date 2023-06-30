@@ -2,7 +2,13 @@
 
 Ruby API client for the Google PaLM APIs.
 
-![Tests status](https://github.com/andreibondarev/google_palm_api/actions/workflows/ci.yml/badge.svg) [![Gem Version](https://badge.fury.io/rb/google_palm_api.svg)](https://badge.fury.io/rb/google_palm_api)
+Part of the [Langchain.rb](https://github.com/andreibondarev/langchainrb) stack.
+
+![Tests status](https://github.com/andreibondarev/google_palm_api/actions/workflows/ci.yml/badge.svg)
+[![Gem Version](https://badge.fury.io/rb/google_palm_api.svg)](https://badge.fury.io/rb/google_palm_api)
+[![Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://rubydoc.info/gems/google_palm_api)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/andreibondarev/google_palm_api/blob/main/LICENSE.txt)
+[![](https://dcbadge.vercel.app/api/server/WDARp7J2n8?compact=true&style=flat)](https://discord.gg/WDARp7J2n8)
 
 
 ## Installation
