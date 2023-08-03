@@ -2,7 +2,6 @@
 
 require "google_palm_api"
 require "faraday"
-require "faraday_middleware"
 require "ostruct"
 require "json"
 
