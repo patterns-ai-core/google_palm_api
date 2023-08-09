@@ -31,6 +31,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "pry-byebug", "~> 3.9"
 
-  spec.add_dependency "faraday", ">= 1.0.0"
-  spec.add_dependency "faraday_middleware", ">= 1.0.0"
+  spec.add_dependency "faraday", ">= 2.0.1", "< 3.0"
 end
